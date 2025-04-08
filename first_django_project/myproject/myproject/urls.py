@@ -28,7 +28,7 @@ def custom_logout(request):
     return redirect('home')
 
 urlpatterns = [
-    path('', views.home, name='home'),
+    path('', views.BoardListView.as_view(), name='home'),
     path('signup/', accounts_views.signup, name='signup'),
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', custom_logout, name='logout'),

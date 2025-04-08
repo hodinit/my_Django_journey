@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
-from django.views.generic import View, CreateView, UpdateView
+from django.views.generic import View, CreateView, UpdateView, ListView
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.utils.decorators import method_decorator
@@ -9,10 +9,18 @@ from django.utils.decorators import method_decorator
 from .models import Board, Post, Topic
 from .forms import NewTopicForm, PostForm
 
+#rewritten using gcbv
 
-def home(request):
-    boards = Board.objects.all()
-    return render(request, 'home.html', {'boards': boards})
+# def home(request):
+#     boards = Board.objects.all()
+#     return render(request, 'home.html', {'boards': boards})
+
+class BoardListView(ListView):
+    model = Board
+    context_object_name = 'boards'
+    template_name = 'home.html'
+#rewritten using gcbv
+
 
 def board_topics(request, pk):
     board = get_object_or_404(Board, pk=pk)
@@ -115,3 +123,5 @@ class PostUpdateView(UpdateView):
         post.updated_at = timezone.now()
         post.save()
         return redirect('topic_posts', pk=post.topic.board.pk, topic_pk=post.topic.pk)
+    
+
