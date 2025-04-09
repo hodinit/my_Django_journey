@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Count
 from django.views.generic import View, CreateView, UpdateView, ListView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 
@@ -83,7 +83,14 @@ def reply_topic(request, pk, topic_pk):
             topic.last_updated = timezone.now()
             topic.save()
 
-            return redirect('topic_posts', pk=pk, topic_pk=topic_pk)
+            topic_url = reverse('topic_posts', kwargs={'pk': pk, 'topic_pk': topic_pk})
+            topic_post_url = '{url}?page={page}#{id}'.format(
+                url = topic_url,
+                id = post.pk,
+                page = topic.get_page_count()
+            )
+
+            return redirect(topic_post_url)
     else:
         form = PostForm()
 
