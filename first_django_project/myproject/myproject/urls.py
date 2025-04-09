@@ -62,6 +62,7 @@ urlpatterns = [
         name = 'password_change'),
     path('settings/password/done/', auth_views.PasswordChangeDoneView.as_view(template_name = 'password_change_done.html'),
         name = 'password_change_done'),
+    path('settings/account/', accounts_views.UserUpdateView.as_view(), name='my_account'),
 
     path('new_post/', views.new_post, name='new_post'),
     path('new_post/', views.NewPostView.as_view(), name='new_post')
